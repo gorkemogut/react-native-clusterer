@@ -26,6 +26,14 @@ add_library(
         ./cpp-adapter.cpp
 )
 
+# Add 16KB page size alignment support
+if(CMAKE_ANDROID_ARCH_ABI STREQUAL "arm64-v8a" OR 
+   CMAKE_ANDROID_ARCH_ABI STREQUAL "x86_64" OR
+   CMAKE_ANDROID_ARCH_ABI STREQUAL "armeabi-v7a" OR
+   CMAKE_ANDROID_ARCH_ABI STREQUAL "x86")
+    target_link_options(${PACKAGE_NAME} PRIVATE "-Wl,-z,max-page-size=16384")
+endif()
+
 find_package(ReactAndroid REQUIRED CONFIG)
 find_library(log-lib log)
 
